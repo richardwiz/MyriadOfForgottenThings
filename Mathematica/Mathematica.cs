@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Mathematica
 {
-    public class Class1
+    public class Mathematica
     {
     }
 }
