@@ -7,5 +7,9 @@ namespace Mathematica
 {
     public class Mathematica
     {
+        public Mathematica()
+        {
+
+        }
     }
 }
