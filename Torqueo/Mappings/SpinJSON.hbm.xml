@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
                    assembly="Torqueo"
-                   namespace="Torqueo.SpinJSON">
+                   namespace="Torqueo">
 
-  <class name="SpinJSON">
+  <class name="SpinJson">
     <id name="JsonId" />
     <property name="Sport" />
     <property name="Imported" />

@@ -14,13 +14,13 @@ namespace Torqueo
     /// [Sport] [nvarchar](50) NOT NULL,
     /// [Imported] [datetime]
     /// </summary>
-    public class SpinJSON
+    public class SpinJson
     {
         public int JsonId { get; set; }
         public String Sport { get; set; }
         public DateTime Imported { get; set; }
 
-        public SpinJSON()
+        public SpinJson()
         {
             this.JsonId = 0;
             this.Sport = String.Empty;

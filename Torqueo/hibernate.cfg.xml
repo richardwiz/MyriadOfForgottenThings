@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+  <session-factory>
+    <property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>
+    <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
+    <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
+    <property name="connection.connection_string">Data Source=ta030633\SQL2K14DEV1;Initial Catalog=NextGen;User ID=NextGenDBUser;Password=NextGenDBUser!@;MultipleActiveResultSets=True;Max Pool Size=10000;Min Pool Size=300;Connection Timeout=5</property>
+
+    <property name="show_sql">true</property>
+  </session-factory>
+</hibernate-configuration>

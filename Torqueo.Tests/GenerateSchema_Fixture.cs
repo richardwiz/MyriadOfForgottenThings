@@ -12,9 +12,9 @@ namespace Torqueo.Tests
         {
             var cfg = new Configuration();
             cfg.Configure();
-            cfg.AddAssembly(typeof(SpinJSON).Assembly);
+            cfg.AddAssembly(typeof(SpinJson).Assembly);
 
-            new SchemaExport(cfg).Execute(true, true, true);
+            new SchemaExport(cfg).Execute(true, true, false);
         }
     }
 }
