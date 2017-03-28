@@ -16,9 +16,9 @@ namespace Torqueo
     /// </summary>
     public class SpinJson
     {
-        public int JsonId { get; set; }
-        public String Sport { get; set; }
-        public DateTime Imported { get; set; }
+        public virtual int JsonId { get; protected set; }
+        public virtual String Sport { get; set; }
+        public virtual DateTime Imported { get; set; }
 
         public SpinJson()
         {
@@ -26,5 +26,6 @@ namespace Torqueo
             this.Sport = String.Empty;
             this.Imported = DateTime.Now;
         }
+
     }
 }
