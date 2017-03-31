@@ -14,6 +14,7 @@ namespace Torqueo.Mappings
             Id(x => x.JsonId);
             Map(x => x.Sport);
             Map(x => x.Imported);
+            Table("SpinJson");
         }
     }
 }

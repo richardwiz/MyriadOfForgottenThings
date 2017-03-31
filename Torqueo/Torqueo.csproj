@@ -67,12 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connectivity\FluentNHibernateHelper.cs" />
+    <Compile Include="Mappings\SpinForsetiMappingMap.cs" />
     <Compile Include="Mappings\SpinJsonMap.cs" />
+    <Compile Include="NextGen Data Objects\SpinForsetiMapping.cs" />
     <Compile Include="NextGen Data Objects\SpinJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Design\SpinJson.cd" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="GenerateSchema_Fixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuerySpin_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
