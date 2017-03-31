@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Torqueo", "Torqueo\Torqueo.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Torqueo.Tests", "Torqueo.Tests\Torqueo.Tests.csproj", "{692C4C04-0713-47D9-BEBB-F4DD384E690A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tatts.NextGen.SpinStats", "Tatts.NextGen.SpinStats\Tatts.NextGen.SpinStats.csproj", "{8A2F794E-FD0C-43FC-AC5C-D5B69958E9E7}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NextGenStatistics", "NextGenStatistics\NextGenStatistics.sqlproj", "{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,16 @@ Global
 		{692C4C04-0713-47D9-BEBB-F4DD384E690A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692C4C04-0713-47D9-BEBB-F4DD384E690A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692C4C04-0713-47D9-BEBB-F4DD384E690A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2F794E-FD0C-43FC-AC5C-D5B69958E9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2F794E-FD0C-43FC-AC5C-D5B69958E9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2F794E-FD0C-43FC-AC5C-D5B69958E9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2F794E-FD0C-43FC-AC5C-D5B69958E9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B3E1AE-3E3E-4CE7-AB64-6CB31152B229}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
