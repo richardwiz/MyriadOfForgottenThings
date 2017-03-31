@@ -1,0 +1,20 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       unnamed constraint on [dbo].[Fixtures]
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Drop
+       unnamed constraint on [dbo].[Fixtures] (Primary Key)
+     Create
+       [dbo].[MergeData] (Table)
+       [dbo].[ValidSubEvents] (Table)
+       Primary Key: unnamed constraint on [dbo].[Fixtures] (Primary Key)
+       [dbo].[SpinFixtureLog] (View)
+
+** Supporting actions
