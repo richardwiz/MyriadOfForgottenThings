@@ -1,7 +1,7 @@
 ﻿using System;
 using Tatts.NextGen.SpinStats.Enums;
 
-namespace AdapterLogAnalyser
+namespace Tatts.NextGen.SpinStats
 {
 
     public class Update

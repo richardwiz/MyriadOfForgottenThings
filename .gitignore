@@ -41,3 +41,5 @@ Torqueo/bin/Debug/nunit.framework.xml
 /Torqueo.Tests/Torqueo.Tests/bin/Debug
 /packages/FluentNHibernate.2.0.3.0
 /Tatts.NextGen.SpinStats/bin/Debug
+/packages/log4net.2.0.8
+/Tatts.NextGen.StatsData/bin/Debug

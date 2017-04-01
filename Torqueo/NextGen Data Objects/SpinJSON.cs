@@ -17,8 +17,8 @@ namespace Torqueo
     public class SpinJson
     {
         public virtual int JsonId { get; protected set; }
-        public virtual String Sport { get; set; }
-        public virtual DateTime Imported { get; set; }
+        public virtual String Sport { get; protected set; }
+        public virtual DateTime Imported { get; protected set; }
 
         public SpinJson()
         {

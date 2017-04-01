@@ -15,5 +15,7 @@
 	, SnapshotLQ INT NOT NULL
 	, SnapshotMed INT NOT NULL
 	, SnapshotUQ INT NOT NULL
-	, SnapshotMax INT NOT NULL
+	, SnapshotMax INT NOT NULL, 
+    [CreatedDate] DATETIME DEFAULT GETDATE() NOT NULL, 
+    [LastUpdatedDate] DATETIME  DEFAULT GETDATE() NOT NULL
 )
