@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text.RegularExpressions;
+using Tatts.NextGen.StatsData;
 using Tatts.NextGen.SpinStats.Enums;
 using log4net;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Tatts.NextGen.SpinStats
 {
@@ -18,6 +21,9 @@ namespace Tatts.NextGen.SpinStats
         static List<Update> updates = new List<Update>();
         static Dictionary<int, Update> pendingUpdates = new Dictionary<int, Update>();
         static List<Fixture> fixtures = new List<Fixture>();
+        static DateTime _currentStartTime = new DateTime();
+        static DateTime _currentFinishTime = new DateTime();
+
         public ILog Logger { get; set; }
 
         public SpinStatsService()
@@ -29,6 +35,11 @@ namespace Tatts.NextGen.SpinStats
         {
             String logDirectory = ConfigurationManager.AppSettings["LogLocation"].ToString();
             LoadData(logDirectory);
+            ParseData();
+            WriteSlowUpdates(logDirectory);
+            WriteData();
+            InsertValidSubEvents();
+            int x = lines.Count;
         }
 
         protected override void OnStop()
@@ -76,7 +87,6 @@ namespace Tatts.NextGen.SpinStats
 
             Console.WriteLine(string.Format("Merged & sorted {0:n0} lines from {1:n0} log files.", lineCount, fileCount));
         }
-
         static void ParseData()
         {
             Console.WriteLine("");
@@ -115,7 +125,17 @@ namespace Tatts.NextGen.SpinStats
                     case LineType.ResultMessage:
                         ProcessResultMessage(match);
                         break;
+                    case LineType.NoResultsIndicator:
+                        ProcessNoResultIndicator(match);
+                        break;
 
+                    case LineType.OfferMapping:
+                        ProcessMappingUpdates(match);
+                        break;
+
+                    case LineType.OfferSelectionChange:
+                        ProcessOfferSelectionChange(match);
+                        break;
                     default:
                         break;
                 }
@@ -182,7 +202,98 @@ namespace Tatts.NextGen.SpinStats
             Console.WriteLine(string.Format("Identified & parsed {0:n0} fixture updates containing {1:n0} market updates across {2:n0} fixtures:", updates.Count, marketUpdateCount, fixtures.Count));
             Console.WriteLine(string.Format("OK: {0:n0}, Misaligned: {1:n0}, Unmatched: {2:n0}.", updates.Where(o => o.State == UpdateState.OK).Count(), updates.Where(o => o.State != UpdateState.OK).Count(), updates.Where(o => o.FixtureId == long.MinValue).Count()));
         }
+        static void WriteData()
+        {
+            using (ISession session = FluentNHibernateHelper.OpenNextGenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {        
+                    foreach (Fixture fixture in fixtures.OrderByDescending(o => o.GeneralUpdateTimeMax))
+                    {
+                        var dbFixture = new Fixtures
+                        (
+                            (Int32)fixture.FixtureId
+                            , fixture.FixtureName
+                            , (Int32)fixture.GeneralUpdates
+                            , (Int32)fixture.GeneralUpdatesZMU
+                            , (Int32)fixture.GeneralUpdateTimeAvg
+                            , (Int32)fixture.GeneralUpdateTimeMin
+                            , (Int32)fixture.GeneralUpdateTimeLQ
+                            , (Int32)fixture.GeneralUpdateTimeMed
+                            , (Int32)fixture.GeneralUpdateTimeUQ
+                            , (Int32)fixture.GeneralUpdateTimeMax
+                            , (Int32)fixture.SnapshotUpdates
+                            , (Int32)fixture.SnapshotUpdatesZMU
+                            , (Int32)fixture.SnapshotUpdateTimeAvg
+                            , (Int32)fixture.SnapshotUpdateTimeMin
+                            , (Int32)fixture.SnapshotUpdateTimeLQ
+                            , (Int32)fixture.SnapshotUpdateTimeMed
+                            , (Int32)fixture.SnapshotUpdateTimeUQ
+                            , (Int32)fixture.SnapshotUpdateTimeMax
+                        );
+                        try
+                        {
+                            session.Save(dbFixture);
+                        }
+                        catch (Exception ex)
+                        {
 
+                            throw;
+                        }
+                        break;                     
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+        static void InsertValidSubEvents()
+        {
+            _currentStartTime = updates.Where(o => o.State == UpdateState.OK).Select(o => o.StartTime).Min();
+            _currentFinishTime = updates.Where(o => o.State == UpdateState.OK).Select(o => o.StartTime).Max();
+            List<Int64> validSubEventIds = new List<Int64>();
+
+            // 1: Select Min and Max Serial numbers from TimeIndex in Forseti.
+            Int64 minSerialNo, maxSerialNo;
+
+            using (ISession session = FluentNHibernateHelper.OpenForsetiSession())
+            {
+                try
+                {
+                    // 1: Get min and max serial numbers from update min and max times.
+                    minSerialNo = session.Query<TxnTimeIndex>().Where(t => t.TxnTime >= _currentStartTime && t.TxnTime <= _currentFinishTime).Select(t => t.SerialNo).Min();
+                    maxSerialNo = session.Query<TxnTimeIndex>().Where(t => t.TxnTime >= _currentStartTime && t.TxnTime <= _currentFinishTime).Select(t => t.SerialNo).Max();
+                    // 2: Query OfferChanegeHistory to get the Valid Serial Nos
+                    validSubEventIds = session.Query<OfferChangeHistory>().Where(s => s.SerialNo >= minSerialNo && s.SerialNo <= maxSerialNo).Select(s => s.SerialNo).ToList();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
+
+            using (ISession ngSession = FluentNHibernateHelper.OpenNextGenSession())
+            {
+                using (ITransaction transaction = ngSession.BeginTransaction())
+                {
+                    try
+                    {
+                        // 3: Add Valid Serial Nos to DB
+                        foreach (var sev in validSubEventIds)
+                        {
+                            ngSession.Save(new ValidSubEvent(sev));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+                    transaction.Commit();
+
+                }
+            }
+        }
         static void ProcessUpdateStart(Match match, UpdateType type)
         {
             DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
@@ -204,7 +315,6 @@ namespace Tatts.NextGen.SpinStats
             update = new Update(timeStamp, threadId, type, fixtureName);
             pendingUpdates.Add(threadId, update);
         }
-
         static void ProcessUpdateComplete(Match match)
         {
             DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
@@ -222,7 +332,6 @@ namespace Tatts.NextGen.SpinStats
                 pendingUpdates.Remove(threadId);
             }
         }
-
         static void ProcessMarketThread(Match match)
         {
             DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
@@ -250,7 +359,6 @@ namespace Tatts.NextGen.SpinStats
                 update.ObservedMarketUpdates++;
             }
         }
-
         static void ProcessMarketSummary(Match match)
         {
             DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
@@ -285,7 +393,6 @@ namespace Tatts.NextGen.SpinStats
                 }
             }
         }
-
         static void ProcessResultMessage(Match match)
         {
             DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
@@ -309,6 +416,88 @@ namespace Tatts.NextGen.SpinStats
                 }
             }
         }
+        static void ProcessNoResultIndicator(Match match)
+        {
+            DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
+            int threadId = int.Parse(match.Groups[2].Value);
 
+            Update update = null;
+            if (pendingUpdates.ContainsKey(threadId) && pendingUpdates.TryGetValue(threadId, out update))
+            {
+                update.NoResultsObserved = true;
+            }
+        }
+        static void ProcessMappingUpdates(Match match)
+        {
+            DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
+            int threadId = int.Parse(match.Groups[2].Value);
+
+            Update update = null;
+            if (pendingUpdates.ContainsKey(threadId) && pendingUpdates.TryGetValue(threadId, out update))
+            {
+                update.OfferMappings += 1;
+            }
+        }
+        static void ProcessOfferSelectionChange(Match match)
+        {
+            DateTime timeStamp = DateTime.Parse(match.Groups[1].Value.Replace(',', '.'));
+            int threadId = int.Parse(match.Groups[2].Value);
+
+            Update update = null;
+            if (pendingUpdates.ContainsKey(threadId) && pendingUpdates.TryGetValue(threadId, out update))
+            {
+                update.OfferSelectionChanges += 1;
+            }
+        }
+        static void WriteSlowUpdates(string directoryPath)
+        {
+            if (updates.Count == 0)
+            {
+                Console.WriteLine(" ");
+                Console.WriteLine("No Updates!");
+
+                return;
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("Writing Slow Updates Report to \"slow-updates.csv\"...");
+
+            List<string> lines = new List<string>();
+
+            List<Update> slowUpdates = updates.Where(o => o.State == UpdateState.OK && o.Type == UpdateType.General && o.Duration >= 5000).ToList<Update>();
+
+            lines.Add("'Total Updates:', " + updates.Where(o => o.State == UpdateState.OK && o.Type == UpdateType.General).Count());
+            lines.Add("'Slow Updates:', " + slowUpdates.Count);
+            lines.Add("'Slow Updates (with Resulting):', " + slowUpdates.Where(o => !o.NoResultsObserved).Count());
+
+            List<int> offerMappings = updates.Where(o => o.State == UpdateState.OK && o.Type == UpdateType.General).Select(o => o.OfferMappings).ToList<int>();
+            lines.Add("'Average Offer Mappings:', " + offerMappings.OrderByDescending(o => o).Average());
+
+            List<int> offerSelectionChanges = updates.Where(o => o.State == UpdateState.OK && o.Type == UpdateType.General).Select(o => o.OfferSelectionChanges).ToList<int>();
+            lines.Add("'Average Offer Selection Changes:', " + offerSelectionChanges.OrderByDescending(o => o).Average());
+
+            lines.Add("");
+            lines.Add("'Start Time', 'Finish Time', 'Thread Id', 'Fixture Id', 'Duration (ms)', 'Markets Updated', 'Resulting Observed?', 'Offer Mappings', 'Offer Selection Changes', 'Parallel Updates'");
+
+            foreach (Update update in slowUpdates.OrderByDescending(o => o.Duration))
+            {
+                int parallel = updates.Where(o => o.State == UpdateState.OK && o.Type == UpdateType.General && o.StartTime >= update.StartTime && o.StartTime < update.FinishTime).Count();
+
+                lines.Add(string.Format("{0:yyyy-MM-dd HH:mm:ss},  {1:yyyy-MM-dd HH:mm:ss}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}", update.StartTime, update.FinishTime, update.ThreadId, ((update.FixtureId == long.MinValue) ? "UNKNOWN" : update.FixtureId.ToString()), update.Duration, update.ObservedMarketUpdates, ((update.NoResultsObserved) ? "NO" : "YES"), update.OfferMappings, update.OfferSelectionChanges, parallel));
+            }
+
+            DirectoryInfo dir = new DirectoryInfo(directoryPath);
+
+            string outputPath = Path.Combine(dir.FullName, "slow-updates.csv");
+
+            if (File.Exists(outputPath))
+            {
+                File.Delete(outputPath);
+            }
+
+            File.WriteAllLines(outputPath, lines.ToArray());
+
+            Console.WriteLine("The Slow Updates Report has been written.");
+        }
     }
 }

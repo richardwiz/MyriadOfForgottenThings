@@ -11,7 +11,7 @@ namespace Tatts.NextGen.StatsData
     {
         public FixturesMap()
         {
-            Id(x => x.FixtureId);
+            Id(x => x.FixtureId).GeneratedBy.Assigned();
             Map(x => x.FixtureName);
             Map(x => x.GeneralUpdates);
             Map(x => x.GeneralAvg);

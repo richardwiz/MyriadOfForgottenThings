@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ValidSubEvents]
+﻿CREATE TABLE [dbo].[ValidSubEvent]
 (
 	SubEventId BIGINT NOT NULL PRIMARY KEY NONCLUSTERED
 )

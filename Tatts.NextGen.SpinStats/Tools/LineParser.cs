@@ -1,4 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Tatts.NextGen.SpinStats.Enums;
 
 namespace Tatts.NextGen.SpinStats
@@ -12,10 +17,40 @@ namespace Tatts.NextGen.SpinStats
         protected static Regex MarketThread     = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+>>>>>>>>>>>>> ([0-9]+) countMarket:([0-9]+) i:([0-9]+) Market.+", RegexOptions.Compiled);
         protected static Regex MarketSummary    = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+>>>>>>>>>>>>> FINISHED Tasks ([0-9]+) - #Mkts: ([0-9]+) countMarket: ([0-9]+).*", RegexOptions.Compiled);
         protected static Regex ResultsMessage = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+@@@@ Processing Results for Main Event ([0-9]+) @@@@.*", RegexOptions.Compiled);
+        protected static Regex NoResultsIndicator = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+@@@@ No markets to result @@@@.*", RegexOptions.Compiled);
+        protected static Regex OfferMapping = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+Updated SpinForsetiMapping FOfferSSelection.*", RegexOptions.Compiled);
+        protected static Regex OfferSelectionChange = new Regex(@"([0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+,[0-9]+) \[([0-9]+)\].+Updating offer SelectionId:.*", RegexOptions.Compiled);
 
         public static LineType ParseLine(string line, out Match match)
         {
             // Order of match execution was decided by likelihood of match.
+            if(line.Contains("Updating offer SelectionId:"))
+            {
+                Match offerSelectionMatch = OfferSelectionChange.Match(line);
+                if(offerSelectionMatch.Success)
+                {
+                    match = offerSelectionMatch;
+                    return LineType.OfferSelectionChange;
+                }
+            }
+            if(line.Contains("Updated SpinForsetiMapping FOfferSSelection"))
+            {
+                Match mappingUpdateMatch = OfferMapping.Match(line);
+                if(mappingUpdateMatch.Success)
+                {
+                    match = mappingUpdateMatch;
+                    return LineType.OfferMapping;
+                }
+            }
+            if(line.Contains("@@@@ No markets to result @@@@"))
+            {
+                Match noResultsMatch = NoResultsIndicator.Match(line);
+                if(noResultsMatch.Success)
+                {
+                    match = noResultsMatch;
+                    return LineType.NoResultsIndicator;
+                }
+            }
             if(line.Contains("Processing Results for Main Event"))
             {
                 Match matchResultsMessage = ResultsMessage.Match(line);

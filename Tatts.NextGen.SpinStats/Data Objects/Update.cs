@@ -16,7 +16,9 @@ namespace Tatts.NextGen.SpinStats
         public int ObservedMarketUpdates;
         public int DeclaredMarketUpdates;
         public double Duration;
- 
+        public bool NoResultsObserved;
+        public int OfferMappings;
+        public int OfferSelectionChanges;
 
         public Update(DateTime startTime, int threadId, UpdateType type, string fixtureName)
         {
@@ -30,6 +32,9 @@ namespace Tatts.NextGen.SpinStats
             this.ObservedMarketUpdates = 0;
             this.DeclaredMarketUpdates = 0;
             this.Duration = 0;
+            this.NoResultsObserved = false;
+            this.OfferMappings = 0;
+            this.OfferSelectionChanges = 0;
         }
 
         public void Finalise(DateTime finishTime)

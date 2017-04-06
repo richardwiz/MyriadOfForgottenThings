@@ -58,14 +58,29 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Fixtures.sql" />
-    <Build Include="Tables\MergeData.sql" />
-    <Build Include="Tables\ValidSubEvents.sql" />
-    <Build Include="Tables\SpinFixtureLog.sql" />
+    <Build Include="Tables\ValidSubEvent.sql" />
+    <Build Include="Views\vw_MergeData.sql" />
+    <Build Include="Views\vw_SpinFixtureLog.sql" />
+    <Build Include="NextGenStatistics.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="NextGenStatistics.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="iBet.dacpac">
+      <HintPath>iBet.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>iBet</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="iBet">
+      <DefaultValue>iBet</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

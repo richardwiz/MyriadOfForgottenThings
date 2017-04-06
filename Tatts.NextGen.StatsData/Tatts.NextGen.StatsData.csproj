@@ -53,10 +53,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connectivity\FluentNHibernateHelper.cs" />
-    <Compile Include="Data Objects\Fixtures.cs" />
-    <Compile Include="Data Objects\MergeData.cs" />
+    <Compile Include="Mappings\OfferChangeHistoryMap.cs" />
+    <Compile Include="Mappings\TxnTimeIndexMap.cs" />
+    <Compile Include="Mappings\ValidSubEventMap.cs" />
+    <Compile Include="Models\Fixtures.cs" />
+    <Compile Include="Models\MergeData.cs" />
     <Compile Include="Mappings\FixturesMap.cs" />
     <Compile Include="Mappings\MergeDataMap.cs" />
+    <Compile Include="Models\OfferChangeHistory.cs" />
+    <Compile Include="Models\TxnTimeIndex.cs" />
+    <Compile Include="Models\ValidSubEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

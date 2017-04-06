@@ -12,7 +12,7 @@ namespace Tatts.NextGen.StatsData
 {
     public static class FluentNHibernateHelper
     {
-        public static ISession OpenSession()
+        public static ISession OpenNextGenSession()
         {
             string connectionString = @"Data Source=ta030633\SQL2K14DEV1;Initial Catalog=NextGenStatistics;User ID=NextGenDBUser;Password=NextGenDBUser!@;MultipleActiveResultSets=True;Max Pool Size=10000;Min Pool Size=300;Connection Timeout=5";
 
@@ -28,5 +28,23 @@ namespace Tatts.NextGen.StatsData
 
             return sessionFactory.OpenSession();
         }
+
+        public static ISession OpenForsetiSession()
+        {
+            string connectionString = @"Data Source=ta030633\SQL2K14DEV1;Initial Catalog=iBet;User ID=tattsgroup\svcsandpithost;Password=Password01;MultipleActiveResultSets=True;Max Pool Size=10000;Min Pool Size=300;Connection Timeout=5;Trusted_Connection=Yes";
+
+            ISessionFactory sessionFactory = Fluently.Configure().Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString).ShowSql())
+                .Mappings(m =>
+                {
+                    m.FluentMappings.AddFromAssemblyOf<FixturesMap>();
+                    m.FluentMappings.AddFromAssemblyOf<MergeDataMap>();
+                })
+                .ExposeConfiguration(cfg => new SchemaExport(cfg)
+                .Create(false, false))
+                .BuildSessionFactory();
+
+            return sessionFactory.OpenSession();
+        }
+
     }
 }

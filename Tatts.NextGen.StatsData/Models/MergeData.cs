@@ -8,13 +8,13 @@ namespace Tatts.NextGen.StatsData
 {
     public class MergeData
     {
-        public Int32 FixtureId { get; set; }
-        public String FixtureName { get; set; }
-        public Int32 TotalBooks { get; set; }
-        public Int32 TotalOffers { get; set; }
-        public Int32 AvgOffersPerBook { get; set; }
-        public Int32 MaxOffersPerBook { get; set; }
-        public Int32 BooksOver30Offers { get; set; }
+        public virtual Int32 FixtureId { get; protected set; }
+        public virtual String FixtureName { get; protected set; }
+        public virtual Int32 TotalBooks { get; protected set; }
+        public virtual Int32 TotalOffers { get; protected set; }
+        public virtual Int32 AvgOffersPerBook { get; protected set; }
+        public virtual Int32 MaxOffersPerBook { get; protected set; }
+        public virtual Int32 BooksOver30Offers { get; protected set; }
 
         public MergeData()
         {

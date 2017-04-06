@@ -28,7 +28,9 @@ namespace Tatts.NextGen.SpinStats.Enums
         SnapshotComplete = 4,
         MarketThread = 5,
         MarketSummary = 6,
-        ResultMessage = 7
+        ResultMessage = 7,
+        NoResultsIndicator = 8,
+        OfferMapping = 9,
+        OfferSelectionChange = 10
     }
-
 }

@@ -2,20 +2,22 @@
 (
 	[FixtureId] INT NOT NULL PRIMARY KEY NONCLUSTERED
 	, FixtureName VARCHAR(MAX) NOT NULL
-	, GeneralUpdates INT NOT NULL
-	, GeneralAvg INT NOT NULL
-	, GeneralMin INT NOT NULL
-	, GeneralLQ INT NOT NULL
-	, GeneralMed INT NOT NULL
-	, GeneralUQ INT NOT NULL
-	, GeneralMax INT NOT NULL
-	, SnapshotUpdates INT NOT NULL
-	, SnapshotAvg INT NOT NULL
-	, SnapshotMin INT NOT NULL
-	, SnapshotLQ INT NOT NULL
-	, SnapshotMed INT NOT NULL
-	, SnapshotUQ INT NOT NULL
-	, SnapshotMax INT NOT NULL, 
+	, GeneralUpdates INT DEFAULT(0) NOT NULL
+	, GeneralUpdatesZMU INT  DEFAULT(0) NOT NULL
+	, GeneralAvg INT  DEFAULT(0) NOT NULL
+	, GeneralMin INT  DEFAULT(0) NOT NULL
+	, GeneralLQ INT  DEFAULT(0) NOT NULL
+	, GeneralMed INT  DEFAULT(0) NOT NULL
+	, GeneralUQ INT  DEFAULT(0) NOT NULL
+	, GeneralMax INT  DEFAULT(0) NOT NULL
+	, SnapshotUpdates INT  DEFAULT(0) NOT NULL
+	, SnapshotUpdatesZMU INT  DEFAULT(0) NOT NULL
+	, SnapshotAvg INT  DEFAULT(0) NOT NULL
+	, SnapshotMin INT  DEFAULT(0) NOT NULL
+	, SnapshotLQ INT  DEFAULT(0) NOT NULL
+	, SnapshotMed INT  DEFAULT(0) NOT NULL
+	, SnapshotUQ INT  DEFAULT(0) NOT NULL
+	, SnapshotMax INT  DEFAULT(0) NOT NULL, 
     [CreatedDate] DATETIME DEFAULT GETDATE() NOT NULL, 
     [LastUpdatedDate] DATETIME  DEFAULT GETDATE() NOT NULL
 )
