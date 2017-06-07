@@ -33,7 +33,7 @@ namespace FluentCerberus.Tests
                 using (var txn = session.BeginTransaction())
                 {
                     session.Save(eftta);
-
+                    txn.Commit();
                     var eft = session.Query<EFTTerminalAudit>().ToList();
                     Assert.IsNotNull(eft);
                 }

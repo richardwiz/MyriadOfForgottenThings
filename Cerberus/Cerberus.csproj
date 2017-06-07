@@ -114,5 +114,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentCerberus\FluentCerberus.csproj">
+      <Project>{dd23dc49-fec4-4320-8312-42f3d5921936}</Project>
+      <Name>FluentCerberus</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
