@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentCerberus
 {
@@ -34,17 +30,26 @@ namespace FluentCerberus
 
         public EFTTerminalAudit()
         {
-        this.PinPadId = 0;
-        this.Make = String.Empty;
-        this.Model = String.Empty;
-        this.MerchantId = 0;
-        this.TerminalId = String.Empty;
-        this.SWVersion = String.Empty;
-        this.OfficeNo = 0;
-        this.StationNo = 0;
-        this.FirstVerified = DateTime.MinValue;
-        this.LastVerified = DateTime.MinValue;
+            this.PinPadId = 0;
+            this.Make = String.Empty;
+            this.Model = String.Empty;
+            this.MerchantId = 0;
+            this.TerminalId = String.Empty;
+            this.SWVersion = String.Empty;
+            this.OfficeNo = 0;
+            this.StationNo = 0;
+            this.FirstVerified = DateTime.MinValue;
+            this.LastVerified = DateTime.MinValue;
+        }
 
+        public override string ToString()
+        {
+            return String.Format(@"PinPadId:{0}; MerchantId:{1}; TerminalId:{2}; OfficeNo:{3}; StationNo:{4}.",
+                this.PinPadId
+                , this.MerchantId
+                , this.TerminalId
+                , this.OfficeNo
+                , this.StationNo);
         }
     }
 }

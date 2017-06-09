@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cerberus Data Objects\EFTTerminalAudit.cs" />
+    <Compile Include="Cerberus Data Objects\EFTTransactionInfo.cs" />
     <Compile Include="Connectivity\FluentNHibernateHelper.cs" />
     <Compile Include="Mappings\EFTTerminalAuditMap.cs" />
+    <Compile Include="Mappings\EFTTransactionInfoMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

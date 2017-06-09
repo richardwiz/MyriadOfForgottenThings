@@ -237,8 +237,8 @@ namespace Tatts.NextGen.SpinStats
                         }
                         catch (Exception ex)
                         {
-
-                            throw;
+                            // Log 
+                            throw ex;
                         }
                         break;                     
                     }
@@ -268,7 +268,7 @@ namespace Tatts.NextGen.SpinStats
                 catch (Exception ex)
                 {
 
-                    throw;
+                    throw ex;
                 }
             }
 
@@ -287,7 +287,7 @@ namespace Tatts.NextGen.SpinStats
                     catch (Exception ex)
                     {
 
-                        throw;
+                        throw ex;
                     }
                     transaction.Commit();
 
