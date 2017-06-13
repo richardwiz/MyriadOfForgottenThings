@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cerberus
+namespace Cerberus.Library
 {
     public static class CerberusTools
     {
@@ -37,7 +37,10 @@ namespace Cerberus
             }
         }
 
-        public static bool EmailNewTerminalsInfo(List<EFTTerminalAudit> newTerminals)
+        public static bool EmailNewTerminalsInfo(List<EFTTerminalAudit> newTerminals
+            , List<String> recipients
+            , String host
+            , String from)
         {
             
             StringBuilder sb = new StringBuilder("The following new Terminals have been added.\n");
@@ -46,12 +49,11 @@ namespace Cerberus
                 sb.AppendFormat("\n", eftInfo.ToString());
                 sb.AppendFormat("{0}", eftInfo.ToString());
             }
-            List<String> recipients = new List<string>();
-            recipients.Add(ConfigurationManager.AppSettings["RecipientList"].ToString());
+            recipients.AddRange(recipients);
 
-            MailMan mailer = new MailMan(ConfigurationManager.AppSettings["MailHost"].ToString()
+            MailMan mailer = new MailMan(host
                 , "New EFT Terminals Have Been Added"
-                , ConfigurationManager.AppSettings["MailHost"].ToString()
+                , from
                 , recipients
                 , true);
             mailer.Send(sb.ToString());
@@ -59,5 +61,18 @@ namespace Cerberus
             // To Fix
             return true;
         }
+
+        public static List<Int64> FindSerialNos()
+        {
+            // Load _ids
+            using (ISession session = FluentNHibernateHelper.OpenEisaSession())
+            {
+                using (var txn = session.BeginTransaction())
+                {
+                    return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
+                }
+            }
+        }
+
     }
 }

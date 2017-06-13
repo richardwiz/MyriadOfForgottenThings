@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using FluentCerberus;
+using System.Configuration;
 
 namespace FluentCerberus.Connectivity
 {
@@ -11,13 +12,13 @@ namespace FluentCerberus.Connectivity
 
         public static ISession OpenCerberusSession()
         {
-            string connectionString = @"Data Source=ta030633\SQL2K14DEV1;Initial Catalog=Cerberus;Integrated Security=True";
+            string connectionString = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
             return OpenSession(connectionString);
         }
 
         public static ISession OpenEisaSession()
         {
-            string connectionString = @"Data Source=ta030633\SQL2K14DEV1;Initial Catalog=Eisa;Integrated Security=True";
+            string connectionString = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
             return OpenSession(connectionString);
         }
 

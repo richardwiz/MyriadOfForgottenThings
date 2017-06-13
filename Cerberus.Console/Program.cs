@@ -1,54 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+using System.Configuration;
+using System.IO;
 using System.Linq;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using ManagedTxnLib;
+using Cerberus.Library;
+using System.Text.RegularExpressions;
+using FluentCerberus.Connectivity;
 using NHibernate;
 using FluentCerberus;
-using FluentCerberus.Connectivity;
 using NHibernate.Linq;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Threading;
-using System.Configuration;
 
-namespace Cerberus
+namespace Cerberus.Console
 {
-    public partial class Cerberus : ServiceBase
+    class Program
     {
         List<Int64> _ids = new List<Int64>();
         List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
         List<Int64> _missingTxns = new List<long>();
-        Timer _timer;
 
-        public Cerberus()
+        static void Main(string[] args)
         {
-            InitializeComponent();
-            var autoEvent = new AutoResetEvent(false);
-            //_timer = new Timer(DoWork, autoEvent, 1000, 250);
-        }
-
-        public void RunAsConsole(string[] args)
-        {
-            OnStart(args);
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadLine();
-            OnStop();
-        }
-
-        protected override void OnStart(string[] args)
-        {
-            DoWork();
-         }
-
-        protected override void OnStop()
-        {
-            // Log stuff
         }
 
         private void DoWork()
@@ -67,7 +41,7 @@ namespace Cerberus
             // Result Lists
             List<TxnDetail> eftLogonTxns = new List<TxnDetail>();
             // Load _ids for adding to db
-            _ids = FindSerialNos();
+            _ids = CerberusTools.FindSerialNos();
 
             using (MTxnLogFile TxnLog = new MTxnLogFile())
             {
@@ -141,12 +115,14 @@ namespace Cerberus
             {
                 // Format email
                 // Send Email
-                bool sent = CerberusTools.EmailNewTerminalsInfo(_newTerminals);
+                bool sent = CerberusTools.EmailNewTerminalsInfo(_newTerminals
+                    , ConfigurationManager.AppSettings["RecipientList"].ToString().Split(new char[] { ',' }).ToList()
+                    , ConfigurationManager.AppSettings["MailHost"].ToString()
+                    , ConfigurationManager.AppSettings["FromAddress"].ToString());
             }
         }
-
         private Int64 AddEftTxnsToSQL(List<TxnDetail> eftLogonTxns)
-        { 
+        {
             Int64 addedTxns = 0;
             // 4: Parse and load the Logons (as they have the pinpad id)
             foreach (TxnDetail eftTxn in eftLogonTxns)
@@ -173,7 +149,7 @@ namespace Cerberus
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
                 // Check if it is known
-                if (! CerberusTools.IsKnownTerminal(eftta.PinPadId))
+                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId))
                 {
                     // 5: ADD to the database
                     using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
@@ -191,16 +167,5 @@ namespace Cerberus
             return addedTxns;
         }
 
-        private List<Int64> FindSerialNos()
-        {
-            // Load _ids
-            using (ISession session = FluentNHibernateHelper.OpenEisaSession())
-            {
-                using (var txn = session.BeginTransaction())
-                {
-                    return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
-                }
-            }
-        }
     }
 }
