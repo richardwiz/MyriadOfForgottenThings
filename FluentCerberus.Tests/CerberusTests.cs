@@ -1,10 +1,12 @@
 ﻿using Cerberus;
+using Cerberus.Library;
 using FluentCerberus.Connectivity;
 using NHibernate;
 using NHibernate.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace FluentCerberus.Tests
@@ -12,6 +14,16 @@ namespace FluentCerberus.Tests
     [TestFixture]
     public class CerberusTests
     {
+        static String _cerberusConnection;
+        static String _eisaConnection;
+
+        [SetUp]
+        public void Init()
+        {
+            _eisaConnection = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
+            _cerberusConnection = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
+        }
+
         [Test]
         public void AddEFTTerminal_Test ()
         {
@@ -26,7 +38,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "asd1564";
             eftta.TerminalId = "sdfgsdfg";
             eftta.PinPadId = 123457;
-            using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -52,7 +64,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "asd1564";
             eftta.TerminalId = "sdfgsdfg";
             eftta.PinPadId = 123456;
-            using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -67,7 +79,7 @@ namespace FluentCerberus.Tests
         [Test]
         public void GetEFTTransInfo_Query()
         {
-            using (ISession session = FluentNHibernateHelper.OpenEisaSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(_eisaConnection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -80,7 +92,7 @@ namespace FluentCerberus.Tests
         [Test]
         public void GetGetKnownEftTerminals_Query()
         {
-            using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -94,11 +106,11 @@ namespace FluentCerberus.Tests
         public void IsKnownTerminal_Test()
         {
             // Known Id = 123456
-            bool exists = CerberusTools.IsKnownTerminal(123456);
+            bool exists = CerberusTools.IsKnownTerminal(123456, _eisaConnection);
             Assert.IsTrue(exists);
 
             // Unknown Id = 987654
-            exists = CerberusTools.IsKnownTerminal(987654);
+            exists = CerberusTools.IsKnownTerminal(987654, _eisaConnection);
             Assert.IsFalse(exists);
 
         }
@@ -120,7 +132,10 @@ namespace FluentCerberus.Tests
             eftta.PinPadId = 123457;
             newTerminals.Add(eftta);
 
-            bool sent = CerberusTools.EmailNewTerminalsInfo(newTerminals);
+            bool sent = CerberusTools.EmailNewTerminalsInfo(newTerminals
+                , ConfigurationManager.AppSettings["RecipientList"].ToString().Split(new char[] { ',' }).ToList()
+                , ConfigurationManager.AppSettings["MailHost"].ToString()
+                , ConfigurationManager.AppSettings["FromAddress"].ToString());
             Assert.IsTrue(sent);
         }
     }

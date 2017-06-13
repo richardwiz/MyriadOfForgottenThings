@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading;
 using System.Configuration;
+using Cerberus.Library;
 
 namespace Cerberus
 {
@@ -25,10 +26,14 @@ namespace Cerberus
         List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
         List<Int64> _missingTxns = new List<long>();
         Timer _timer;
+        static String _cerberusConnection;
+        static String _eisaConnection;
 
         public Cerberus()
         {
             InitializeComponent();
+            _eisaConnection = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
+            _cerberusConnection = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
             var autoEvent = new AutoResetEvent(false);
             //_timer = new Timer(DoWork, autoEvent, 1000, 250);
         }
@@ -67,7 +72,7 @@ namespace Cerberus
             // Result Lists
             List<TxnDetail> eftLogonTxns = new List<TxnDetail>();
             // Load _ids for adding to db
-            _ids = FindSerialNos();
+            _ids = CerberusTools.FindSerialNos(_eisaConnection);
 
             using (MTxnLogFile TxnLog = new MTxnLogFile())
             {
@@ -141,7 +146,10 @@ namespace Cerberus
             {
                 // Format email
                 // Send Email
-                bool sent = CerberusTools.EmailNewTerminalsInfo(_newTerminals);
+                bool sent = CerberusTools.EmailNewTerminalsInfo(_newTerminals
+                    , ConfigurationManager.AppSettings["RecipientList"].ToString().Split(new char[] { ',' }).ToList()
+                    , ConfigurationManager.AppSettings["MailHost"].ToString()
+                    , ConfigurationManager.AppSettings["FromAddress"].ToString());
             }
         }
 
@@ -173,10 +181,12 @@ namespace Cerberus
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
                 // Check if it is known
-                if (! CerberusTools.IsKnownTerminal(eftta.PinPadId))
+                if (! CerberusTools.IsKnownTerminal(eftta.PinPadId, _cerberusConnection))
                 {
                     // 5: ADD to the database
-                    using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+                    using (ISession session = FluentNHibernateHelper.OpenSession(
+                                    ConfigurationManager.ConnectionStrings["Cerberus"].ToString()
+))
                     {
                         using (var txn = session.BeginTransaction())
                         {
@@ -189,18 +199,6 @@ namespace Cerberus
                 }
             }
             return addedTxns;
-        }
-
-        private List<Int64> FindSerialNos()
-        {
-            // Load _ids
-            using (ISession session = FluentNHibernateHelper.OpenEisaSession())
-            {
-                using (var txn = session.BeginTransaction())
-                {
-                    return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
-                }
-            }
         }
     }
 }

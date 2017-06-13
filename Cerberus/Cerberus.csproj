@@ -107,17 +107,18 @@
     <Compile Include="Cerberus.Designer.cs">
       <DependentUpon>Cerberus.cs</DependentUpon>
     </Compile>
-    <Compile Include="CerberusTools.cs" />
-    <Compile Include="MailMan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TxLogInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cerberus.Library\Cerberus.Library.csproj">
+      <Project>{762652f9-778f-446c-88ab-e464d555593e}</Project>
+      <Name>Cerberus.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentCerberus\FluentCerberus.csproj">
       <Project>{dd23dc49-fec4-4320-8312-42f3d5921936}</Project>
       <Name>FluentCerberus</Name>

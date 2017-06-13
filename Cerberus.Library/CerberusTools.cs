@@ -13,9 +13,9 @@ namespace Cerberus.Library
 {
     public static class CerberusTools
     {
-        public static bool IsKnownTerminal(Int64 pinPadId)
+        public static bool IsKnownTerminal(Int64 pinPadId, String connection)
         {
-            using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -26,9 +26,9 @@ namespace Cerberus.Library
                 }
             }
         }
-        internal static List<EFTTerminalAudit> GetKnownEftTerminals()
+        internal static List<EFTTerminalAudit> GetKnownEftTerminals(String connection)
         {
-            using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
             {
                 using (var txn = session.BeginTransaction())
                 {
@@ -62,10 +62,10 @@ namespace Cerberus.Library
             return true;
         }
 
-        public static List<Int64> FindSerialNos()
+        public static List<Int64> FindSerialNos(String connection)
         {
             // Load _ids
-            using (ISession session = FluentNHibernateHelper.OpenEisaSession())
+            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
             {
                 using (var txn = session.BeginTransaction())
                 {

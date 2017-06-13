@@ -17,15 +17,18 @@ namespace Cerberus.Console
 {
     class Program
     {
-        List<Int64> _ids = new List<Int64>();
-        List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
-        List<Int64> _missingTxns = new List<long>();
+        static List<Int64> _ids = new List<Int64>();
+        static List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
+        static List<Int64> _missingTxns = new List<long>();
+        static String _cerberusConnection;
+        static String _eisaConnection;
 
         static void Main(string[] args)
         {
+            DoWork();
         }
 
-        private void DoWork()
+        private static void DoWork()
         {
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
@@ -41,7 +44,7 @@ namespace Cerberus.Console
             // Result Lists
             List<TxnDetail> eftLogonTxns = new List<TxnDetail>();
             // Load _ids for adding to db
-            _ids = CerberusTools.FindSerialNos();
+            _ids = CerberusTools.FindSerialNos(_eisaConnection);
 
             using (MTxnLogFile TxnLog = new MTxnLogFile())
             {
@@ -121,7 +124,7 @@ namespace Cerberus.Console
                     , ConfigurationManager.AppSettings["FromAddress"].ToString());
             }
         }
-        private Int64 AddEftTxnsToSQL(List<TxnDetail> eftLogonTxns)
+        private static Int64 AddEftTxnsToSQL(List<TxnDetail> eftLogonTxns)
         {
             Int64 addedTxns = 0;
             // 4: Parse and load the Logons (as they have the pinpad id)
@@ -149,10 +152,10 @@ namespace Cerberus.Console
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
                 // Check if it is known
-                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId))
+                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId, _eisaConnection))
                 {
                     // 5: ADD to the database
-                    using (ISession session = FluentNHibernateHelper.OpenCerberusSession())
+                    using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
                     {
                         using (var txn = session.BeginTransaction())
                         {
