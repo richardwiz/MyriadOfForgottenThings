@@ -1,5 +1,4 @@
-﻿using Cerberus;
-using Cerberus.Library;
+﻿using Cerberus.Library;
 using FluentCerberus.Connectivity;
 using NHibernate;
 using NHibernate.Linq;

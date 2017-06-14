@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ManagedTxnLib;
 using Cerberus.Library;
 using System.Text.RegularExpressions;
 using FluentCerberus.Connectivity;
 using NHibernate;
 using FluentCerberus;
-using NHibernate.Linq;
 
 namespace Cerberus.Console
 {
@@ -25,6 +22,8 @@ namespace Cerberus.Console
 
         static void Main(string[] args)
         {
+            _eisaConnection = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
+            _cerberusConnection = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
             DoWork();
         }
 
@@ -33,7 +32,6 @@ namespace Cerberus.Console
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
             DateTime ScanEndTxnTime = DateTime.MaxValue;
-
             // Get Logs from Archive folder
             String path = ConfigurationManager.AppSettings["TxnLogPath"].ToString();
 
@@ -152,7 +150,7 @@ namespace Cerberus.Console
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
                 // Check if it is known
-                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId, _eisaConnection))
+                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId, _cerberusConnection))
                 {
                     // 5: ADD to the database
                     using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))

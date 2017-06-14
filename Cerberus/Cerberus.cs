@@ -184,9 +184,7 @@ namespace Cerberus
                 if (! CerberusTools.IsKnownTerminal(eftta.PinPadId, _cerberusConnection))
                 {
                     // 5: ADD to the database
-                    using (ISession session = FluentNHibernateHelper.OpenSession(
-                                    ConfigurationManager.ConnectionStrings["Cerberus"].ToString()
-))
+                    using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
                     {
                         using (var txn = session.BeginTransaction())
                         {
