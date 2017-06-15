@@ -213,3 +213,7 @@ packages/Microsoft.AspNet.WebPages.3.2.3/Content/Web.config.uninstall.xdt
 packages/Microsoft.AspNet.WebPages.3.2.3/Microsoft.AspNet.WebPages.3.2.3.nupkg
 packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Deployment.xml
 .vs/config/applicationhost.config
+/Cerberus.Console/bin/Debug
+/Cerberus.Library/bin/Debug
+/FluentCerberus.Tests/bin/Debug
+/UpgradeLog.htm

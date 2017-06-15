@@ -51,6 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cerberus.Library\Cerberus.Library.csproj">
+      <Project>{762652f9-778f-446c-88ab-e464d555593e}</Project>
+      <Name>Cerberus.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cerberus\Cerberus.csproj">
       <Project>{6e6604c5-a0e2-46c4-b9a3-7386c85a64c6}</Project>
       <Name>Cerberus</Name>

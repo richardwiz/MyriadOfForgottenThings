@@ -17,6 +17,7 @@ using System.IO;
 using System.Threading;
 using System.Configuration;
 using Cerberus.Library;
+using Cerberus.Properties;
 
 namespace Cerberus
 {
@@ -63,7 +64,7 @@ namespace Cerberus
             DateTime ScanEndTxnTime = DateTime.MaxValue;
 
             // Get Logs from Archive folder
-            String path = ConfigurationManager.AppSettings["TxnLogPath"].ToString();
+            String path = Properties.Settings.Default.Properties["TxnLogPath"].DefaultValue.ToString();//ConfigurationManager.AppSettings["TxnLogPath"].ToString();
 
             // Load up List of Logs to Scan
             String logPattern = ConfigurationManager.AppSettings["LogPattern"].ToString();

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cerberus.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TxnLogPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D:\EisaDir\data\TxnLogBackup\ProdExamples</Value>
+    </Setting>
+    <Setting Name="LogPattern" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">EisLog*.DAT</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

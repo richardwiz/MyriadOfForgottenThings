@@ -19,15 +19,17 @@ namespace Cerberus.Console
         static List<Int64> _missingTxns = new List<long>();
         static String _cerberusConnection;
         static String _eisaConnection;
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static void Main(string[] args)
         {
             _eisaConnection = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
             _cerberusConnection = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
-            DoWork();
+            _log.Debug("Application started");
+            ScanLogs();
         }
 
-        private static void DoWork()
+        private static void ScanLogs()
         {
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
