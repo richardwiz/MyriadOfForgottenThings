@@ -41,6 +41,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClsErrorLib">
+      <HintPath>..\ExternalLibraries\ClsErrorLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CLSTransportLib">
+      <HintPath>..\ExternalLibraries\CLSTransportLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,12 +60,6 @@
     <Compile Include="LogExtensions.cs" />
     <Compile Include="LogMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\ClsErrorLib\ClsErrorLib.csproj">
-      <Project>{a0bac478-523b-4c33-918f-c47d28b2e945}</Project>
-      <Name>ClsErrorLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

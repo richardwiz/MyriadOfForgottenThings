@@ -1,0 +1,40 @@
+﻿<Window x:Class="Cerberus.Admin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cerberus.Admin"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="571.386" Width="988.153">
+    <Window.Resources>
+        <local:DateIsTodayConverter x:Key ="DateIsTodayConverter"/>
+    </Window.Resources>
+    <DataGrid x:Name="dgrdEFT" 
+        Margin="18,21,23,12"
+        AutoGenerateColumns="False" 
+        HeadersVisibility="All" 
+        CanUserAddRows="True">
+        <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding FirstVerified, Converter={StaticResource DateIsTodayConverter}}" Value="True">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding FirstVerified, Converter={StaticResource DateIsTodayConverter}}" Value="False">
+                        <Setter Property="Background" Value="White"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.RowStyle>
+        <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding PinPadId}" Header="PinPadId" Width="*"/>
+            <DataGridTextColumn Binding="{Binding MerchantId}" Header="MerchantId" Width="*"/>
+            <DataGridTextColumn Binding="{Binding TerminalId}" Header="TerminalId" Width="*"/>
+            <DataGridTextColumn Binding="{Binding SWVersion}" Header="SWVersion" Width="*"/>
+            <DataGridTextColumn Binding="{Binding OfficeNo}" Header="OfficeNo" Width="*"/>
+            <DataGridTextColumn Binding="{Binding StationNo}" Header="StationNo" Width="*"/>
+            <DataGridTextColumn Binding="{Binding FirstVerified}" Header="FirstVerified" Width="*"/>
+            <DataGridTextColumn Binding="{Binding LastVerified}" Header="LastVerified" Width="*"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</Window>

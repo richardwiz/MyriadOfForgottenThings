@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using ManagedTxnLib;
-using NHibernate;
+﻿using Cerberus.Library;
 using FluentCerberus;
 using FluentCerberus.Connectivity;
-using NHibernate.Linq;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Threading;
+using ManagedTxnLib;
+using NHibernate;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
-using Cerberus.Library;
-using Cerberus.Properties;
+using System.IO;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Cerberus
 {
@@ -26,7 +19,7 @@ namespace Cerberus
         List<Int64> _ids = new List<Int64>();
         List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
         List<Int64> _missingTxns = new List<long>();
-        Timer _timer;
+        private Timer _timer;
         static String _cerberusConnection;
         static String _eisaConnection;
 
@@ -35,36 +28,79 @@ namespace Cerberus
             InitializeComponent();
             _eisaConnection = ConfigurationManager.ConnectionStrings["Eisa"].ToString();
             _cerberusConnection = ConfigurationManager.ConnectionStrings["Cerberus"].ToString();
-            var autoEvent = new AutoResetEvent(false);
-            //_timer = new Timer(DoWork, autoEvent, 1000, 250);
         }
 
+        #region Service Control Methods
         public void RunAsConsole(string[] args)
         {
             OnStart(args);
             Console.WriteLine("Press any key to exit...");
-            Console.ReadLine();
-            OnStop();
+            Thread.Sleep(180000);
+            //OnStop();
         }
 
         protected override void OnStart(string[] args)
         {
-            DoWork();
-         }
+            // log start 
+            StartTimer();
+        }
 
         protected override void OnStop()
         {
-            // Log stuff
+            // Log stop
+            StopTimer();
         }
 
-        private void DoWork()
+        #endregion
+
+        #region Timer Control Methods
+        private void StartTimer()
+        {
+            try
+            {
+                if (_timer == null)
+                {
+                    int intervalSecs = 60;
+                    TimeSpan tsInterval = new TimeSpan(0, 0, intervalSecs);
+                    _timer = new Timer(new TimerCallback(DoWork), null, tsInterval, tsInterval);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // log error
+            }
+        }
+
+        private void StopTimer()
+        {
+            try
+            {
+                if (_timer != null)
+                {
+                    // Log("Stopping Timer");
+                    _timer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                    _timer.Dispose();
+                    _timer = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log("Error - Stop Timer : " + ex.Message.ToString());
+            }
+
+        }
+
+        #endregion
+
+        private void DoWork(Object state)
         {
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
             DateTime ScanEndTxnTime = DateTime.MaxValue;
 
             // Get Logs from Archive folder
-            String path = Properties.Settings.Default.Properties["TxnLogPath"].DefaultValue.ToString();//ConfigurationManager.AppSettings["TxnLogPath"].ToString();
+            String path = Properties.Settings.Default.Properties["TxnLogPath"].DefaultValue.ToString();
 
             // Load up List of Logs to Scan
             String logPattern = ConfigurationManager.AppSettings["LogPattern"].ToString();

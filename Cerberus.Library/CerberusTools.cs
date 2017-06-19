@@ -26,7 +26,7 @@ namespace Cerberus.Library
                 }
             }
         }
-        internal static List<EFTTerminalAudit> GetKnownEftTerminals(String connection)
+        public static List<EFTTerminalAudit> GetKnownEftTerminals(String connection)
         {
             using (ISession session = FluentNHibernateHelper.OpenSession(connection))
             {
@@ -69,10 +69,10 @@ namespace Cerberus.Library
             {
                 using (var txn = session.BeginTransaction())
                 {
+                    // Modify this to be for a date (range?)
                     return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
                 }
             }
         }
-
     }
 }

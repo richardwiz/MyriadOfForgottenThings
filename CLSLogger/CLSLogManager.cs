@@ -6,18 +6,18 @@
 
 namespace CLSLogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.IO;
-	using System.Diagnostics;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.IO;
+    using System.Diagnostics;
     using ClsErrorLib;
 
-	/// <summary>
-	/// TODO: Update summary.
-	/// </summary>
-	[DebuggerDisplay("{ToString()}")]
+    /// <summary>
+    /// TODO: Update summary.
+    /// </summary>
+    [DebuggerDisplay("{ToString()}")]
 	public class CLSLogManager
 	{
         #region Private Variables
