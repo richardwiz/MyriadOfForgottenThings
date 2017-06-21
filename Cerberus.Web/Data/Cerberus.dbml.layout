@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Cerberus">
+  <DataContextMoniker Name="/CerberusDataContext" />
+  <nestedChildShapes>
+    <classShape Id="4ef8026a-c0b6-429b-80c2-d4fb66b77f4f" absoluteBounds="1.875, 1.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/CerberusDataContext/EFTTerminalAudit" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3a4c04f6-b4c7-4239-a887-fa0c10b2e3a9" absoluteBounds="1.8900000000000001, 2.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -105,12 +105,12 @@ namespace FluentCerberus.Tests
         public void IsKnownTerminal_Test()
         {
             // Known Id = 123456
-            bool exists = CerberusTools.IsKnownTerminal(123456, _eisaConnection);
-            Assert.IsTrue(exists);
+            EFTTerminalAudit exists = CerberusTools.GetTerminalByPinPadId(123456, _eisaConnection);
+            Assert.IsNotNull(exists);
 
             // Unknown Id = 987654
-            exists = CerberusTools.IsKnownTerminal(987654, _eisaConnection);
-            Assert.IsFalse(exists);
+            exists = CerberusTools.GetTerminalByPinPadId(987654, _eisaConnection);
+            Assert.IsNull(exists);
 
         }
 
@@ -131,7 +131,22 @@ namespace FluentCerberus.Tests
             eftta.PinPadId = 123457;
             newTerminals.Add(eftta);
 
+            List<EFTTerminalAudit> movedTerminals = new List<EFTTerminalAudit>();
+            EFTTerminalAudit efttaMoved = new EFTTerminalAudit();
+            eftta.FirstVerified = DateTime.Now;
+            eftta.LastVerified = DateTime.Now;
+            eftta.Make = "Thismake";
+            eftta.MerchantId = 987654;
+            eftta.Model = "11";
+            eftta.OfficeNo = 74656;
+            eftta.StationNo = 1;
+            eftta.SWVersion = "qwerty444";
+            eftta.TerminalId = "ashei8456";
+            eftta.PinPadId = 999888777;
+            movedTerminals.Add(efttaMoved);
+
             bool sent = CerberusTools.EmailNewTerminalsInfo(newTerminals
+                , movedTerminals
                 , ConfigurationManager.AppSettings["RecipientList"].ToString().Split(new char[] { ',' }).ToList()
                 , ConfigurationManager.AppSettings["MailHost"].ToString()
                 , ConfigurationManager.AppSettings["FromAddress"].ToString());

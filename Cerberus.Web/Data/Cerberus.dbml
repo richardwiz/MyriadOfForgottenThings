@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Cerberus" Class="CerberusDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=ta030633\SQL2K14DEV1;Initial Catalog=Cerberus;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="CerberusConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.EFTTerminalAudit" Member="EFTTerminalAudits">
+    <Type Name="EFTTerminalAudit">
+      <Column Name="PinPadId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Make" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="MerchantId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TerminalId" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SWVersion" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="OfficeNo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="StationNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FirstVerified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastVerified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

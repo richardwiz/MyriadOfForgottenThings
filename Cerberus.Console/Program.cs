@@ -16,6 +16,7 @@ namespace Cerberus.Console
     {
         static List<Int64> _ids = new List<Int64>();
         static List<EFTTerminalAudit> _newTerminals = new List<EFTTerminalAudit>();
+        static List<EFTTerminalAudit> _movedTerminals = new List<EFTTerminalAudit>();
         static List<Int64> _missingTxns = new List<long>();
         static String _cerberusConnection;
         static String _eisaConnection;
@@ -31,6 +32,13 @@ namespace Cerberus.Console
 
         private static void ScanLogs()
         {
+            // Clean Out New Terminals
+            if (_newTerminals.Count > 0)
+                _newTerminals.Clear();
+
+            if (_movedTerminals.Count > 0)
+                _movedTerminals.Clear();
+
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
             DateTime ScanEndTxnTime = DateTime.MaxValue;
@@ -114,11 +122,12 @@ namespace Cerberus.Console
             }
 
             // If _newTerminals has any new terminals then Email or something
-            if (_newTerminals.Count > 0)
+            if (_newTerminals.Count > 0 || _movedTerminals.Count > 0)
             {
                 // Format email
                 // Send Email
                 bool sent = CerberusTools.EmailNewTerminalsInfo(_newTerminals
+                    , _movedTerminals
                     , ConfigurationManager.AppSettings["RecipientList"].ToString().Split(new char[] { ',' }).ToList()
                     , ConfigurationManager.AppSettings["MailHost"].ToString()
                     , ConfigurationManager.AppSettings["FromAddress"].ToString());
@@ -151,24 +160,30 @@ namespace Cerberus.Console
                 eftta.SWVersion = rexSWVersion.Match(eftDetail).ToString();
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
-                // Check if it is known
-                if (!CerberusTools.IsKnownTerminal(eftta.PinPadId, _cerberusConnection))
+                // Check if it is known- Check against PinPadId ONLY
+                EFTTerminalAudit existingTerminal = CerberusTools.GetTerminalByPinPadId(eftta.PinPadId, _cerberusConnection);
+                if (existingTerminal != null)
                 {
-                    // 5: ADD to the database
-                    using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
+                    // Check if Eft Terminal has moved
+                    if (existingTerminal.OfficeNo != eftta.OfficeNo)
                     {
-                        using (var txn = session.BeginTransaction())
-                        {
-                            session.Save(eftta);
-                            txn.Commit();
-                        }
+                        _movedTerminals.Add(eftta);
+                        CerberusTools.AddEftTerminal(eftta, _cerberusConnection);
+                        addedTxns++;
                     }
+                    else
+                    {
+                        // Log terminal exists ??
+                    }
+                }
+                else // The terminal is New
+                {
                     _newTerminals.Add(eftta);
+                    CerberusTools.AddEftTerminal(eftta, _cerberusConnection);
                     addedTxns++;
                 }
             }
             return addedTxns;
         }
-
     }
 }
