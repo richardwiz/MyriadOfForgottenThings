@@ -67,7 +67,7 @@ namespace Cerberus.Web
         protected void gvEFT_Sorting(object sender, GridViewSortEventArgs e)
         {
            IEnumerable<EFTTerminalAudit> efts = GetKnownEftTerminals();
-            efts = efts.OrderBy(e.SortExpression, e.SortDirection);
+            //efts = efts.OrderBy(e.SortExpression, e.SortDirection);
 
             gvEFT.DataSource = efts;
             gvEFT.DataBind();

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.ServiceProcess;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -106,15 +107,29 @@ namespace Cerberus
             // Setup Variables
             DateTime ScanStartTxnTime = DateTime.MinValue;
             DateTime ScanEndTxnTime = DateTime.MaxValue;
+            List<FileInfo> logs = new List<FileInfo>();
 
             // Get Logs from Archive folder
-            String path = Properties.Settings.Default.Properties["TxnLogPath"].DefaultValue.ToString();
-
+            String path = ConfigurationManager.AppSettings["TxnLogPath"].ToString();//Properties.Settings.Default.Properties["TxnLogPath"].ToString();
+            String workingDir = ConfigurationManager.AppSettings["WorkingDir"].ToString(); //Properties.Settings.Default.Properties["WorkingDir"].ToString();
+            String doneDir = ConfigurationManager.AppSettings["DoneDir"].ToString(); //Properties.Settings.Default.Properties["DoneDir"].ToString();
+            Boolean getYesterdaysTxnLog = Convert.ToBoolean(ConfigurationManager.AppSettings["GetYesterdaysTxnLog"].ToString());
             // Load up List of Logs to Scan
             String logPattern = ConfigurationManager.AppSettings["LogPattern"].ToString();
+            DirectoryInfo txnDir = new DirectoryInfo(path);
 
-            // TODO: modify this to get for Date Range
-            List<String> logs = Directory.GetFiles(path, logPattern).ToList();
+            // TODO: Might need to Copy file to CerberusDir for processing
+            if (getYesterdaysTxnLog)
+            {
+                logs = txnDir.GetFiles(logPattern, SearchOption.TopDirectoryOnly)
+                                .Where(f => f.CreationTime.Date == DateTime.Now.AddDays(-1).Date)
+                                .ToList();
+            }
+            else // Get them all in the folder
+            {
+                logs = txnDir.GetFiles(logPattern, SearchOption.TopDirectoryOnly)
+                                .ToList();
+            }
 
             // Result Lists
             List<TxnDetail> eftLogonTxns = new List<TxnDetail>();
@@ -125,16 +140,21 @@ namespace Cerberus
             {
                 try
                 {
-                    foreach (String log in logs)
+                    foreach (FileInfo log in logs)
                     {
-                        if (!TxnLog.Open(log))
+                        // Copy to working Dir
+                        String workingPath = Path.Combine(workingDir, log.Name);
+                        File.Copy(log.FullName, workingPath, true);
+                        new FileIOPermission(FileIOPermissionAccess.Read, log.FullName).Demand(); // Breaks the copy lock????
+
+                        if (!TxnLog.Open(log.FullName))
                         {
                             throw new ApplicationException("Unable to open file '" + log + "'");
                         }
 
                         // Get Log Info
                         TxLogInfo logInfo = new TxLogInfo();
-                        logInfo.GetLogDetails(log);
+                        logInfo.GetLogDetails(log.FullName);
                         // Get First and Last Serial Nos
                         UInt64 lastPosition = TxnLog.GetLastPosition();
                         UInt64 currentPosition = TxnLog.GetPosition(logInfo.firstSerialNo);
@@ -178,6 +198,16 @@ namespace Cerberus
 
                         } // foreach (ulong serialNo in _ids)
                         TxnLog.Close();
+
+                        // Move to Done - delete old one if exists
+                        String donePath = Path.Combine(doneDir, log.Name);
+                        if (File.Exists(donePath))
+                        {
+                            File.Delete(donePath);
+                        }
+
+                        File.Move(workingPath, donePath);
+
                     } // foreach (String log in logs)
                     Int64 addedTxns = AddEftTxnsToSQL(eftLogonTxns);
                 }
