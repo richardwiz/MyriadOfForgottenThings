@@ -220,3 +220,5 @@ packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Deploymen
 /Cerberus/bin/Debug
 /Cerberus.Admin/bin/Debug
 /packages
+/Cerberus.Web/bin
+/Cerberus.Web/DXTempFolder/BinaryData
