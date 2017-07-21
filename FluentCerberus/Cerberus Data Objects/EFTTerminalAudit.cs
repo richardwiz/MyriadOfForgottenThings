@@ -25,6 +25,7 @@ namespace FluentCerberus
         public virtual String SWVersion { get; set; }
         public virtual int OfficeNo { get; set; }
         public virtual int StationNo { get; set; }
+        public virtual int Status{ get; set; }
         public virtual DateTime FirstVerified { get; set; }
         public virtual DateTime LastVerified { get; set; }
 
@@ -38,18 +39,20 @@ namespace FluentCerberus
             this.SWVersion = String.Empty;
             this.OfficeNo = 0;
             this.StationNo = 0;
+            this.Status = 0;
             this.FirstVerified = DateTime.MinValue;
             this.LastVerified = DateTime.MinValue;
         }
 
         public override string ToString()
         {
-            return String.Format(@"PinPadId:{0}; MerchantId:{1}; TerminalId:{2}; OfficeNo:{3}; StationNo:{4}.",
+            return String.Format(@"PinPadId:{0}; MerchantId:{1}; TerminalId:{2}; OfficeNo:{3}; StationNo:{4}; Status:{5}.",
                 this.PinPadId
                 , this.MerchantId
                 , this.TerminalId
                 , this.OfficeNo
-                , this.StationNo);
+                , this.StationNo
+                , this.Status);
         }
     }
 }

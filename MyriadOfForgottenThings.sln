@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathematica", "Mathematica\Mathematica.csproj", "{E5289052-A145-472E-AC8C-819FE3B855E3}"
 EndProject
@@ -46,6 +46,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASPSorting", "ASPSorting", "{E61BA12F-5B8E-4C04-A015-C8DFD861D237}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridViewOnSorting", "3rdPartyExamples\ASPSorting\GridViewOnSorting.csproj", "{6AFDE03D-8741-4A93-8DCE-453EB703B69F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSDN Examples", "MSDN Examples", "{667C4E7F-5EEC-423C-A725-A4F310A619D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyThreadWalkthroughApp", "MyThreadWalkthroughApp\MyThreadWalkthroughApp.csproj", "{5F58373F-64CA-4E70-94D7-240F2A60CEB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -255,6 +259,18 @@ Global
 		{6AFDE03D-8741-4A93-8DCE-453EB703B69F}.Release|x64.Build.0 = Release|Any CPU
 		{6AFDE03D-8741-4A93-8DCE-453EB703B69F}.Release|x86.ActiveCfg = Release|Any CPU
 		{6AFDE03D-8741-4A93-8DCE-453EB703B69F}.Release|x86.Build.0 = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|x64.Build.0 = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -274,5 +290,6 @@ Global
 		{5F098EC4-9053-4871-842B-873F66B33C7C} = {4050AE0C-69A7-4424-9D69-6C7538451BFF}
 		{E61BA12F-5B8E-4C04-A015-C8DFD861D237} = {ADD82532-E275-4239-B0B8-2A5BCBE6E04D}
 		{6AFDE03D-8741-4A93-8DCE-453EB703B69F} = {E61BA12F-5B8E-4C04-A015-C8DFD861D237}
+		{5F58373F-64CA-4E70-94D7-240F2A60CEB8} = {667C4E7F-5EEC-423C-A725-A4F310A619D6}
 	EndGlobalSection
 EndGlobal

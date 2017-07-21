@@ -13,14 +13,18 @@ namespace Cerberus.Library
 {
     public static class CerberusTools
     {
-        public static EFTTerminalAudit GetTerminalByPinPadId(Int64 pinPadId, String connection)
+        private const String _PT11Start = "11";
+        private const String _QT720Start = "72";
+
+        #region Fluent Nhibernate Queries
+        public static List<EFTTerminalAudit> GetTerminalByPinPadId(Int64 pinPadId, String connection)
         {
             using (ISession session = FluentNHibernateHelper.OpenSession(connection))
             {
                 using (var txn = session.BeginTransaction())
                 {
                     return session.Query<EFTTerminalAudit>()
-                        .Where(x => x.PinPadId == pinPadId).FirstOrDefault();
+                        .Where(x => x.PinPadId == pinPadId).ToList();
                 }
             }
         }
@@ -50,6 +54,36 @@ namespace Cerberus.Library
             }
         }
 
+        public static List<Int64> FindSerialNos(String connection)
+        {
+            // Load _ids
+            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
+            {
+                using (var txn = session.BeginTransaction())
+                {
+                    // Modify this to be for a date (range?)
+                    return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
+                }
+            }
+        }
+
+        public static void AddEftTerminal(EFTTerminalAudit eftta, String connection)
+        {
+            // 5: ADD to the database
+            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
+            {
+                using (var txn = session.BeginTransaction())
+                {
+                    session.Save(eftta);
+                    txn.Commit();
+                }
+            }
+
+        }
+
+        #endregion
+
+        #region Email Helper
         public static bool EmailNewTerminalsInfo(List<EFTTerminalAudit> newTerminals
             , List<EFTTerminalAudit> movedTerminals
             , List<String> recipients
@@ -90,31 +124,34 @@ namespace Cerberus.Library
             return true;
         }
 
-        public static List<Int64> FindSerialNos(String connection)
+        #endregion
+
+        #region Checking and Validation
+        public static bool HasTerminalMoved(List<EFTTerminalAudit> existingTerminals, EFTTerminalAudit eftta)
         {
-            // Load _ids
-            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
-            {
-                using (var txn = session.BeginTransaction())
-                {
-                    // Modify this to be for a date (range?)
-                    return session.Query<EFTTransactionInfo>().Select(x => x.SerialNo).ToList();
-                }
-            }
+            return (existingTerminals.Select(x => x.PinPadId == eftta.PinPadId && x.OfficeNo == eftta.OfficeNo).ToList().Count) == 0;
         }
 
-        public static void AddEftTerminal(EFTTerminalAudit eftta, String connection)
+        public static void GetEFTMakeAndModel(long pinPadId, out string make, out string model)
         {
-            // 5: ADD to the database
-            using (ISession session = FluentNHibernateHelper.OpenSession(connection))
+            if (pinPadId.ToString().StartsWith(_PT11Start))
             {
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Save(eftta);
-                    txn.Commit();
-                }
+                make = "QUEST";
+                model = "Swift PT11";
             }
-
+            else if (pinPadId.ToString().StartsWith(_QT720Start))
+            {
+                make = "QUEST";
+                model = "QT720";
+            }
+            else
+            {
+                make = "Make";
+                model = "Model";
+            }
         }
+        #endregion
+
+
     }
 }

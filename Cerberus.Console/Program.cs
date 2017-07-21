@@ -161,19 +161,25 @@ namespace Cerberus.Console
                 eftta.TerminalId = rexTerminalId.Match(eftDetail).ToString();
 
                 // Check if it is known- Check against PinPadId ONLY
-                EFTTerminalAudit existingTerminal = CerberusTools.GetTerminalByPinPadId(eftta.PinPadId, _cerberusConnection);
-                if (existingTerminal != null)
+                List<EFTTerminalAudit> existingTerminals = CerberusTools.GetTerminalByPinPadId(eftta.PinPadId, _cerberusConnection);
+                if (existingTerminals != null && existingTerminals.Count > 0)
                 {
                     // Check if Eft Terminal has moved
-                    if (existingTerminal.OfficeNo != eftta.OfficeNo)
+                    foreach (var eftTerm in existingTerminals)
                     {
-                        _movedTerminals.Add(eftta);
-                        CerberusTools.AddEftTerminal(eftta, _cerberusConnection);
-                        addedTxns++;
-                    }
-                    else
-                    {
-                        // Log terminal exists ??
+                        if (eftTerm.OfficeNo != eftta.OfficeNo)
+                        {
+                            _movedTerminals.Add(eftta);
+                            eftta.Status = Convert.ToInt32(TerminalAuditStatus.Moved);
+                            _log.Info(String.Format(" ==> ADDING *MOVED* Terminal[PPID] {0} to SQL for Office{1} and Seat {2}.", eftta.PinPadId, eftta.OfficeNo, eftta.StationNo));
+                            CerberusTools.AddEftTerminal(eftta, _cerberusConnection);
+                            addedTxns++;
+                        }
+                        else
+                        {
+                            // Log terminal exists ??
+                            _log.Info(String.Format(" ==> Terminal[PPID] {0} EXISTS at Office{1} and Seat {2}.", eftta.PinPadId, eftta.OfficeNo, eftta.StationNo));
+                        }
                     }
                 }
                 else // The terminal is New

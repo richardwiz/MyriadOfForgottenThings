@@ -37,6 +37,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "asd1564";
             eftta.TerminalId = "sdfgsdfg";
             eftta.PinPadId = 123457;
+            eftta.Status = 1;
             using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
             {
                 using (var txn = session.BeginTransaction())
@@ -63,6 +64,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "asd1564";
             eftta.TerminalId = "sdfgsdfg";
             eftta.PinPadId = 123456;
+            eftta.Status = 2;
             using (ISession session = FluentNHibernateHelper.OpenSession(_cerberusConnection))
             {
                 using (var txn = session.BeginTransaction())
@@ -105,12 +107,19 @@ namespace FluentCerberus.Tests
         public void IsKnownTerminal_Test()
         {
             // Known Id = 123456
-            EFTTerminalAudit exists = CerberusTools.GetTerminalByPinPadId(123456, _eisaConnection);
-            Assert.IsNotNull(exists);
+            List<EFTTerminalAudit> exists = CerberusTools.GetTerminalByPinPadId(123456, _eisaConnection);
+
+            foreach(EFTTerminalAudit eft in exists)
+            {
+                Assert.IsNotNull(exists);
+            }
 
             // Unknown Id = 987654
             exists = CerberusTools.GetTerminalByPinPadId(987654, _eisaConnection);
-            Assert.IsNull(exists);
+            foreach (EFTTerminalAudit eft in exists)
+            {
+                Assert.IsNull(exists);
+            }
 
         }
 
@@ -129,6 +138,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "asd1564";
             eftta.TerminalId = "sdfgsdfg";
             eftta.PinPadId = 123457;
+            eftta.Status = 1;
             newTerminals.Add(eftta);
 
             List<EFTTerminalAudit> movedTerminals = new List<EFTTerminalAudit>();
@@ -143,6 +153,7 @@ namespace FluentCerberus.Tests
             eftta.SWVersion = "qwerty444";
             eftta.TerminalId = "ashei8456";
             eftta.PinPadId = 999888777;
+            eftta.Status = 2;
             movedTerminals.Add(efttaMoved);
 
             bool sent = CerberusTools.EmailNewTerminalsInfo(newTerminals

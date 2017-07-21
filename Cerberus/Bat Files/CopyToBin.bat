@@ -1,10 +1,9 @@
-REM Copy Wagering executables to the EisaDir\bin directory
+REM Copy Wagering executables to the CerberusDir\bin directory
 REM Add to VS External Tools with Arguments: Debug D:, Initial Directory: $(SolutionDir) 
 
 del %2\CerberusDir\bin\*.* /Q
 
 REM Host -> Bin
-del %2\CerberusDir\bin\*.* /Q
 copy ..\bin\%1\*.exe %2\CerberusDir\bin\*.*
 copy ..\bin\%1\*.dll %2\CerberusDir\bin\*.*
 copy ..\bin\%1\*.config %2\CerberusDir\bin\*.*
