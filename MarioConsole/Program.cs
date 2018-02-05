@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Amqp;
+using Amqp.Serialization;
+using Bifrost;
 
 namespace MarioConsole
 {
@@ -38,7 +40,8 @@ namespace MarioConsole
                case "<":
                   helloIn = receiver.Receive();
                   receiver.Accept(helloIn);
-                  Console.WriteLine(String.Format("Message: {0}; recieved from {1}:{2}", helloIn.Body.ToString(), broker, address));
+                  Jedi razz = helloIn.GetBody<Jedi>();
+                  Console.WriteLine(String.Format("Message: {0}; recieved from {1}:{2}", razz.ToString(), broker, address));
                   break;
                default:
                   helloOut = new Message(msg);
