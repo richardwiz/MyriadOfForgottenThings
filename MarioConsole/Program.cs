@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using Amqp;
 using Amqp.Serialization;
 using Bifrost;
@@ -40,7 +41,7 @@ namespace MarioConsole
                case "<":
                   helloIn = receiver.Receive();
                   receiver.Accept(helloIn);
-                  Jedi razz = helloIn.GetBody<Jedi>();
+                  Jedi razz = new JavaScriptSerializer().Deserialize<Jedi>(helloIn.Body.ToString());
                   Console.WriteLine(String.Format("Message: {0}; recieved from {1}:{2}", razz.ToString(), broker, address));
                   break;
                default:

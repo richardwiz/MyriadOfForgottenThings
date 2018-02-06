@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using Amqp;
 using Bifrost;
 
@@ -29,6 +30,8 @@ namespace LuigiConsole
             Console.WriteLine("Please enter Message: ");
             Message helloOut, helloIn;
             String msg;
+            String json = new JavaScriptSerializer().Serialize(new Jedi(97, "Razzrion"));
+            Console.WriteLine(json);
 
             try
             {
@@ -38,7 +41,7 @@ namespace LuigiConsole
                   {
                      case ">":
                         msg = Console.ReadLine();
-                        helloOut = new Message(msg);
+                        helloOut = new Message(json);
                         sender.Send(helloOut);
                         Console.WriteLine(String.Format("Message: {0}; sent to {1}:{2}", helloOut.Body.ToString(), broker, address));
                         break;
@@ -48,7 +51,7 @@ namespace LuigiConsole
                         Console.WriteLine(String.Format("Message: {0}; recieved from {1}:{2}", helloIn.Body.ToString(), broker, address));
                         break;
                      default:
-                        helloOut = new Message(new Jedi(97, "Razzorion Jaxx"));
+                        helloOut = new Message();
                         sender.Send(helloOut);
                         Console.WriteLine(String.Format("Message: {0}; sent to {1}:{2}", helloOut.Body.ToString(), broker, address));
                         break;

@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClaudioConsole", "ClaudioCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld-robust", "HelloWorld-robust\HelloWorld-robust.csproj", "{90F8E44F-3296-4DF7-AAF7-D1212EF712B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BifrostUnit", "BifrostUnit\BifrostUnit.csproj", "{2533D2AB-104F-47ED-B9B9-417B31C1F68D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,18 @@ Global
 		{90F8E44F-3296-4DF7-AAF7-D1212EF712B3}.Release|x64.Build.0 = Release|Any CPU
 		{90F8E44F-3296-4DF7-AAF7-D1212EF712B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{90F8E44F-3296-4DF7-AAF7-D1212EF712B3}.Release|x86.Build.0 = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|x64.Build.0 = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|x64.Build.0 = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -439,6 +453,7 @@ Global
 		{C47543B6-5335-4EE7-AD0B-75002254DE33} = {F49AA543-74D1-4737-BDFF-51B29B112FA7}
 		{250317B1-2BDF-463E-9539-17BFBE29B349} = {F49AA543-74D1-4737-BDFF-51B29B112FA7}
 		{90F8E44F-3296-4DF7-AAF7-D1212EF712B3} = {EE5B05D7-F22C-40B9-822C-05A03C6F7109}
+		{2533D2AB-104F-47ED-B9B9-417B31C1F68D} = {F49AA543-74D1-4737-BDFF-51B29B112FA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA6CCC7F-6CF6-4CEC-9301-FBC3DD7E7076}
