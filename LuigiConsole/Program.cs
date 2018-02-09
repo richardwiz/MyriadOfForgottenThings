@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Amqp;
-using Bifrost;
+using PapaLegba;
 
 namespace LuigiConsole
 {
@@ -13,8 +13,8 @@ namespace LuigiConsole
    {
       static void Main(string[] args)
       {
-         string broker = args.Length >= 1 ? args[0] : "amqp://localhost:5672";
-         string address = args.Length >= 2 ? args[1] : "MarioBros";
+         string broker = args.Length >= 1 ? args[0] : "amqp://localhost:5672"; //Amq 
+         string address = args.Length >= 2 ? args[1] : "MarioBros"; // topic
          Trace.TraceLevel = TraceLevel.Frame | TraceLevel.Verbose;
 
          Address brokerAddr = new Address(broker);

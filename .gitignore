@@ -248,3 +248,5 @@ packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Deploymen
 /NextGenStatistics/bin/Debug
 /Torqueo.Tests/bin
 *.suo
+/BifrostUnit/bin/Debug
+/PapaLegba/bin/Debug

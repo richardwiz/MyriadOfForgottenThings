@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Amqp;
 using Amqp.Serialization;
-using Bifrost;
+using PapaLegba;
 
 namespace MarioConsole
 {

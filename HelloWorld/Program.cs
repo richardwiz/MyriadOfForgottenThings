@@ -23,7 +23,7 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-         string broker = args.Length >= 1 ? args[0] : "amqp://localhost:5672";
+         string broker = args.Length >= 1 ? args[0] : "amqp://0.0.0.0:5672";
          string address = args.Length >= 2 ? args[1] : "amq.topic";
 
          Address brokerAddr = new Address(broker);

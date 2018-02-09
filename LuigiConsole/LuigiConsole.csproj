@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Amqp.Net">
-      <HintPath>..\ExternalLibraries\Amqp.Net.dll</HintPath>
+    <Reference Include="Amqp.Net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=905a7b1e6458e0c3, processorArchitecture=MSIL">
+      <HintPath>..\packages\AMQPNetLite.2.1.1\lib\net45\Amqp.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,11 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bifrost\Bifrost.csproj">
-      <Project>{2b9a7a1e-38f3-4fc6-89bd-25fdcbb544fb}</Project>
-      <Name>Bifrost</Name>
+    <ProjectReference Include="..\PapaLegba\PapaLegba.csproj">
+      <Project>{f68fe81e-c133-4f7b-adcf-f0a342e61f1e}</Project>
+      <Name>PapaLegba</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
