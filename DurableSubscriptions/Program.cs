@@ -82,8 +82,9 @@ namespace aorg.apache.activemq.examples
                 source.Durable = 2;
                 source.DistributionMode = new Symbol("copy");
 
-                ReceiverLink receiver = new ReceiverLink(session, DEFAULT_SUBSCRIPTION_NAME, source, null);                
-
+                ReceiverLink receiver = new ReceiverLink(session, DEFAULT_SUBSCRIPTION_NAME, source, null);
+            Properties p = new Properties();
+            p.rep
                 session.Close();
             }
             finally
