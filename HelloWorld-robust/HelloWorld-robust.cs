@@ -52,8 +52,8 @@ namespace HelloWorld_robust
 
         static int Main(string[] args)
         {
-            string broker  = args.Length >= 1 ? args[0] : "amqp://localhost:5672";
-            string address = args.Length >= 2 ? args[1] : "amq.topic";
+            string broker = args.Length >= 1 ? args[0] : "amqp://localhost:5672";
+            string address = args.Length >= 2 ? args[1] : "MarioBros";
             string payload = args.Length >= 3 ? args[2] : "Hello World!";
             bool logging = args.Length >= 4;
             int exitStatus = 0;
@@ -99,7 +99,7 @@ namespace HelloWorld_robust
                 }
                 exitStatus = 1;
             }
-
+         Console.ReadLine();
             return exitStatus;
         }
     }
