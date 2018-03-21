@@ -84,7 +84,7 @@ namespace aorg.apache.activemq.examples
 
                 ReceiverLink receiver = new ReceiverLink(session, DEFAULT_SUBSCRIPTION_NAME, source, null);
             Properties p = new Properties();
-            p.rep
+          
                 session.Close();
             }
             finally

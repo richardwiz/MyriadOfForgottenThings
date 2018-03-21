@@ -70,8 +70,8 @@ namespace LuigiConsole
          else
          {
             /*AMQ*/
-            string broker = args.Length >= 1 ? args[0] : "amqp://localhost:5672"; //Amq 
-            string address = args.Length >= 2 ? args[1] : "MarioBros"; // topic
+            string broker = args.Length >= 1 ? args[0] : "amqp://TA015929:5672"; //Amq 
+            string address = args.Length >= 2 ? args[1] : "Experiment"; // topic
             Trace.TraceLevel = TraceLevel.Frame | TraceLevel.Verbose;
 
             Address brokerAddr = new Address(broker);
