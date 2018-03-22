@@ -65,6 +65,7 @@ namespace ClaudioConsole
             /*AMQ*/
             string broker = args.Length >= 1 ? args[0] : "amqp://TA015929:5672";
             string address = args.Length >= 2 ? args[1] : "Experiment";
+            Trace.TraceLevel = TraceLevel.Frame | TraceLevel.Verbose;
 
             Address brokerAddr = new Address(broker);
             Connection connection = new Connection(brokerAddr);

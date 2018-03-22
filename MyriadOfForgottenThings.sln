@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathematica", "Mathematica\Mathematica.csproj", "{E5289052-A145-472E-AC8C-819FE3B855E3}"
 EndProject
@@ -37,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLSLogger", "CLSLogger\CLSL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibraries", "ExternalLibraries", "{CF63F703-4745-4809-A729-9F781DCFBD73}"
 	ProjectSection(SolutionItems) = preProject
-		ExternalLibraries\Amqp.Net.dll = ExternalLibraries\Amqp.Net.dll
-		ExternalLibraries\Amqp.Net.pdb = ExternalLibraries\Amqp.Net.pdb
 		ExternalLibraries\ClsErrorLib.dll = ExternalLibraries\ClsErrorLib.dll
 		ExternalLibraries\ClsErrorLib.pdb = ExternalLibraries\ClsErrorLib.pdb
 		ExternalLibraries\CLSTransportLib.dll = ExternalLibraries\CLSTransportLib.dll

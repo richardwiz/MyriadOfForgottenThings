@@ -64,8 +64,9 @@ namespace HelloWorld_robust
 
             if (logging)
             {
-                Trace.TraceLevel = TraceLevel.Frame;
-                Trace.TraceListener = (f, a) => Console.WriteLine(DateTime.Now.ToString("[hh:mm:ss.fff]") + " " + string.Format(f, a));
+                Trace.TraceLevel = TraceLevel.Frame | TraceLevel.Verbose;
+
+               //Trace.TraceListener = //(f, a) => Console.WriteLine(DateTime.Now.ToString("[hh:mm:ss.fff] ") + string.Format(f, a));
             }
 
             Connection connection = null;

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Amqp.Net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=905a7b1e6458e0c3, processorArchitecture=MSIL">
-      <HintPath>..\packages\AMQPNetLite.Core.2.1.2\lib\netstandard1.3\Amqp.Net.dll</HintPath>
+      <HintPath>..\packages\AMQPNetLite.2.1.1\lib\net45\Amqp.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Amqp.Serialization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=905a7b1e6458e0c3, processorArchitecture=MSIL">
@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
