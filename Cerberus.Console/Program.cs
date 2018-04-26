@@ -52,7 +52,7 @@ namespace Cerberus.Console
             // Result Lists
             List<TxnDetail> eftLogonTxns = new List<TxnDetail>();
             // Load _ids for adding to db
-            _ids = CerberusTools.FindSerialNos(_eisaConnection);
+            //_ids = CerberusTools.FindSerialNos(_eisaConnection);
 
             using (MTxnLogFile TxnLog = new MTxnLogFile())
             {
